@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Signup Page</title>
+    <script src="https://www.gstatic.com/firebasejs/7.22.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.22.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.22.1/firebase-firestore.js"></script>
+    <script src="/Auth/firebaseauth.js"></script>
+    <script>
+      // Your web app's Firebase configuration
+      // Initialize Firebase
+
+      function checkUsername(username) {
+        return db.collection("users")
+        .where("username", "==", username)
+          .get()
+          .then(function(snapshot) {
+            if (snapshot.size > 0) {
+              return true;
+            } else {
+              return false;
+            }
+          });
+      }
+      
+      function checkEmail(email) {
+        return db.collection("users")
+          .where("email", "==", email)
+          .get()
+          .then(function(snapshot) {
+            if (snapshot.size > 0) {
+              return true;
+            } else {
+              return false;
+            }
+          });
+      }
+
+      function checkPhone(phonenumber) {
+        return db.collection("users")
+          .where("phonenumber", "==", phonenumber)
+          .get()
+          .then(function(snapshot) {
+            if (snapshot.size > 0) {
+              return true;
+            } else {
+              return false;
+            }
+          });
+      }
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="containersub">
+    <div class="head">
+    <h1 class="head1">Signup Page</h1>
+    <h2 class="head2">It's quick and easy.</h2>
+  </div>
+  <div class="formdiv">
+    <form class="form" id="signup-form">
+      <div class="form-group">
+        <div class="col-md">
+          <div class="col-md-">
+      <input class="col-fn" type="text" id="firstname" placeholder="First Name" name="firstname" required>
+      <input class="col-ln" type="text" id="lastname" placeholder="Last Name" name="lastname" required>
+      </div>
+    </div>
+    <input class="user" placeholder="Username" type="text" id="username" name="username" required>
+    <input class="email" placeholder="Email" type="email" id="email" name="email" required>
+    <input placeholder="Phone Number" class="phone" type="text" id="phonenumber" name="phonenumber" required>
+    <input  class="pass" placeholder="New Password" type="password" id="password" name="password" required>
+    <label class="dtalab" for="dateofbirth">Date of birth:</label>
+    <input class="date" type="date" id="dateofbirth" name="date Of Birth" required>
+    <label for="gender">Gender:</label>
+    <input type="radio" id="male" name="gender" value="male" required>
+    <label for="male">Male</label>
+    <input type="radio" id="female" name="gender" value="female" required>
+    <label for="female">Female</label>
+    <input type="radio" id="other" name="gender" value="other" required>
+    <label for="other">Other</label>
+    <input type="submit" value="Sign Up">
+  </div>
+    </form>
+  </div>
+  </div>
+</div>
+    <script>
+      // Get the form element
+      var form = document.getElementById("signup-form");
+      // Listen for the form submission
+      form.addEventListener("submit", function(e) {
+        e.preventDefault();
+        // Get the form data
+        var data = {
+          firstname: form.elements.firstname.value,
+          lastname: form.elements.lastname.value,
+          dateofbirth: form.elements.dateofbirth.value,
+          phonenumber: form.elements.phonenumber.value,
+          username: form.elements.username.value,
+          email: form.elements.email.value,
+          password: form.elements.password.value,
+          gender: form.elements.gender.value,
+        };
+        // Check if email or username is already in use
+        checkEmail(data.email)
+          .then(function(emailInUse) {
+            if (emailInUse) {
+              console.log("Email already in use");
+              alert("Email already in use");
+              return;
+            }
+            checkUsername(data.username)
+              .then(function(usernameInUse) {
+                if (usernameInUse) {
+                  console.log("Username already in use");
+                  alert("Username already in use");
+                  return;
+                }
+                checkPhone(data.phonenumber)
+                .then(function(phoneInUse) {
+                  if (phoneInUse) {
+                    console.log("Phone number already in use");
+                    alert("Phone number already in use");
+                    return;
+                  }
+                  // Create user in Firebase Authentication
+                  auth.createUserWithEmailAndPassword(data.email, data.password)
+                    .then(function(response) {
+                      var user = auth.currentUser;
+                      user.updateProfile({
+                        phoneNumber: data.phonenumber
+                      });
+                      var userData = {
+                        firstname: data.firstname,
+                        lastname: data.lastname,
+                        dateofbirth: data.dateofbirth,
+                        phonenumber: data.phonenumber,
+                        username: data.username,
+                        email: data.email,
+                        uid: response.user.uid,
+                        gender: data.gender
+                      };
+                      // Create user in Firestore
+                        db.collection("users")
+                            .add(userData)
+                            .then(function(docRef) {
+                                console.log("User added to Firestore with ID:", docRef.id);
+                            })
+                            .catch(function(error) {
+                                console.log("Error adding user to Firestore:", error);
+                            });
+                    })
+                    .catch(function(error) {
+                        console.log("Error adding user to Firebase Authentication:", error);
+                    });
+                });
+            });
+        });
+    });
+
+    </script>
+  </body>
+</html>
+
+<style>
+  .head
+  {
+    color: #1c1e21;
+    direction: ltr;
+    line-height: 1.34;
+    font-size: 12px;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 8px 8px 0 0;
+    box-sizing: border-box;
+    padding: 10px 16px;
+    position: relative;
+    width: 432px;
+    z-index: 1;
+    font-family: inherit;
+  }
+
+  .head1
+  {
+    direction: ltr;
+    font-weight: 600;
+    color: #1c1e21;
+    font-family: SFProDisplay-Bold, Helvetica, Arial, sans-serif;
+    margin-bottom: 0;
+    font-size: 25px;
+    line-height: 32px;
+    text-align: center;
+  }
+
+  .head2
+  {
+    direction: ltr;
+    font-weight: normal;
+    color: #606770;
+    font-family: SFProText-Regular, Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    line-height: 24px;
+    text-align: center;
+    margin-bottom: 0;
+  }
+
+  .formdiv
+  {
+    color: #1c1e21;
+    direction: ltr;
+    line-height: 1.34;
+    font-size: 12px;
+    background-color: #fff;
+    border-radius: 0 0 8px 8px;
+    border-top: 1px solid #dadde1;
+    box-sizing: border-box;
+    padding: 16px;
+    position: relative;
+    width: 432px;
+    font-family: inherit;
+  }
+
+  .form
+  {
+    color: #1c1e21;
+    direction: ltr;
+    line-height: 1.34;
+    font-size: 12px;
+    font-family: inherit;
+    margin: 0;
+    padding: 0;
+  }
+
+  .container
+  {
+    color: #1c1e21;
+    direction: ltr;
+    line-height: 1.34;
+    font-size: 12px;
+    text-align: center;
+    border: 1px solid #dddfe2;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
+    margin: auto;
+    padding: 0 0 14px 0;
+    width: 450px;
+    font-family: inherit;
+  }
+
+  .containersub
+  {
+    color: #1c1e21;
+    direction: ltr;
+    line-height: 1.34;
+    font-size: 12px;
+    margin: 0 auto 30px auto;
+    padding: 0 20px 0 0;
+    width: 400px;
+    font-family: inherit;
+  }
+
+  .form-group 
+  {
+    color: #1c1e21;
+    direction: ltr;
+    line-height: 1.34;
+    font-size: 12px;
+    font-family: inherit;
+  }
+
+  .col-md
+  {
+    color: #1c1e21;
+    direction: ltr;
+    line-height: 1.34;
+    font-size: 12px;
+    font-family: inherit;
+  }
+
+  .col-md-
+  {
+    color: #1c1e21;
+    direction: ltr;
+    line-height: 1.34;
+    font-size: 12px;
+    width: 399px;
+    zoom: 1;
+    font-family: inherit;
+  }
+
+
+  .col-fn
+  {
+    direction: ltr;
+    color: #1c1e21;
+    -webkit-appearance: none;
+    border: 1px solid #ccd0d5;
+    background-color: transparent;
+    position: relative;
+    border-radius: 5px;
+    margin: 4px;
+    border-color: #ccd0d5;
+    font-family: SFProDisplay-Regular, Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    line-height: 16px;
+    padding: 11px;
+    width: 170px;
+  }
+
+  .col-ln
+  {
+    direction: ltr;
+    color: #1c1e21;
+    -webkit-appearance: none;
+    border: 1px solid #ccd0d5;
+    background-color: transparent;
+    position: relative;
+    border-radius: 5px;
+    margin: 0;
+    border-color: #ccd0d5;
+    font-family: SFProDisplay-Regular, Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    line-height: 16px;
+    padding: 11px;
+    width: 170px;
+
+  }
+
+  body
+  {
+    color: #1c1e21;
+    direction: ltr;
+    line-height: 1.34;
+    font-size: 12px;
+    display: inline;
+    zoom: 1;
+    min-height: 640px;
+    margin: 0;
+    outline: none;
+    padding: 0;
+    width: auto;
+    font-family: inherit;
+  }
+
+  .email
+  {
+    direction: ltr;
+    color: #1c1e21;
+    -webkit-appearance: none;
+    border: 1px solid #ccd0d5;
+    background-color: transparent;
+    position: relative;
+    border-radius: 5px;
+    margin: 0;
+    border-color: #ccd0d5;
+    width: 375px;
+    font-family: SFProDisplay-Regular, Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    line-height: 16px;
+    padding: 11px;
+    margin-top: 15px;
+  }
+
+  .pass
+  {
+    direction: ltr;
+    color: #1c1e21;
+    -webkit-appearance: none;
+    border: 1px solid #ccd0d5;
+    background-color: transparent;
+    position: relative;
+    border-radius: 5px;
+    margin: 0;
+    border-color: #ccd0d5;
+    width: 375px;
+    font-family: SFProDisplay-Regular, Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    line-height: 16px;
+    padding: 11px;
+    margin-top: 15px;
+  }
+
+  .user
+  {
+    direction: ltr;
+    color: #1c1e21;
+    -webkit-appearance: none;
+    border: 1px solid #ccd0d5;
+    background-color: transparent;
+    position: relative;
+    border-radius: 5px;
+    margin: 0;
+    border-color: #ccd0d5;
+    width: 375px;
+    font-family: SFProDisplay-Regular, Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    line-height: 16px;
+    padding: 11px;
+    margin-top: 15px;
+  }
+
+  .phone
+  {
+    direction: ltr;
+    color: #1c1e21;
+    -webkit-appearance: none;
+    border: 1px solid #ccd0d5;
+    background-color: transparent;
+    position: relative;
+    border-radius: 5px;
+    margin: 0;
+    border-color: #ccd0d5;
+    width: 375px;
+    font-family: SFProDisplay-Regular, Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    line-height: 16px;
+    padding: 11px;
+    margin-top: 15px;
+  }
+
+  .pass
+  {
+    direction: ltr;
+    color: #1c1e21;
+    -webkit-appearance: none;
+    border: 1px solid #ccd0d5;
+    background-color: transparent;
+    position: relative;
+    border-radius: 5px;
+    margin: 0;
+    border-color: #ccd0d5;
+    width: 375px;
+    font-family: SFProDisplay-Regular, Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    line-height: 16px;
+    padding: 11px;
+    margin-top: 15px;
+  }
+
+  .dtalab
+  {
+    color: #606770;
+    font-family: SFProText-Medium, Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 20px;
+    margin-top: 2px;
+    margin-bottom: 4px;
+    margin-top: 15px;
+  }
+
+  .date
+  {
+    direction: ltr;
+    color: #1c1e21;
+    -webkit-appearance: none;
+    border: 1px solid #ccd0d5;
+    background-color: transparent;
+    position: relative;
+    border-radius: 5px;
+    margin: 0;
+    border-color: #ccd0d5;
+    width: 375px;
+    font-family: SFProDisplay-Regular, Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    line-height: 16px;
+    padding: 11px;
+ 
+  }
+
+  
+
+
+</style>
