@@ -45,7 +45,7 @@
                   <li class="nav-item dropdown" id="user";>
                       <a class="nav-link dropdown-toggle active" href="#" data-bs-toggle="dropdown" aria-expanded="false">Welcome <span id="userd" href="#"></span></a>
                        <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="#">Logout</a></li>
+                      <li><a class="dropdown-item" href="javascript:logout()">Logout</a></li>
                     </ul>
                   </li>
                 </ul>
@@ -81,6 +81,11 @@
           document.getElementById("signup").style.display = "none";
           document.getElementById("userd").innerHTML = firstname;
         }
+
+        function logout()
+        {
+          document.cookie = "jarvizuser=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        } 
       </script>
     </body>
 </html>
