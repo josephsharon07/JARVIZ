@@ -45,7 +45,7 @@
                   <li class="nav-item dropdown" id="user";>
                       <a class="nav-link dropdown-toggle active" href="#" data-bs-toggle="dropdown" aria-expanded="false">Welcome <span id="userd" href="#"></span></a>
                        <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="javascript:logout()">Logout</a></li>
+                        <li><a class="dropdown-item" href="javascript:logout()">logout</a></li>
                     </ul>
                   </li>
                 </ul>
@@ -53,27 +53,36 @@
             </div>
           </nav>
           <script>
-            if (document.cookie.split(';').some((item) => item.trim().startsWith('jarvizuser='))) {
-          
-              var cookieValue = document.cookie
-              .split('; ')
-              .find(row => row.startsWith('jarvizuser='))
-              .split('=')[1];
+         if (document.cookie.split(';').some((item) => item.trim().startsWith('jarvizuser='))) {
+            // Extract the cookie value
+            var cookieValue = document.cookie
+                .split('; ')
+                .find(row => row.startsWith('jarvizuser='))
+                .split('=')[1];
 
-            // Convert the JSON string to an object
+            // Convert the cookie value from a string to an object
             var userData = JSON.parse(cookieValue);
 
-            // Use the userData object as needed
-            var firstname = userData.firstName;
-            var lastname = userData.lastName;
-            var email = userData.email;
-            var phone = userData.phone;
-            var username = userData.username;
-            var dateofbirth = userData.dob;
-            userdiaplay(firstname);
-        } else {
-          document.getElementById("user").style.display = "none";
-        }
+            // Check if the cookie has expired
+            var now = new Date();
+            var expiryDate = new Date(userData.expiry);
+            if (now > expiryDate) {
+              // Cookie has expired, delete it
+              document.cookie = 'jarvizuser=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;';
+            } else {
+              // Cookie is still valid, use the user data
+              var firstname = userData.firstName;
+              var lastname = userData.lastName;
+              var email = userData.email;
+              var phone = userData.phone;
+              var username = userData.username;
+              var dateofbirth = userData.dob;
+              userdiaplay(firstname);
+            }
+          } else {
+            // Cookie does not exist, show login and signup links
+            document.getElementById("user").style.display = "none";
+          }
 
         function userdiaplay(firstname)
         {
@@ -84,9 +93,91 @@
 
         function logout()
         {
-          document.cookie = "jarvizuser=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;
-          window.location("/index.html")
-        } 
+          document.cookie = 'jarvizuser=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;';
+          window.location.href="/index.html";
+        }
+      </script>
+
+      <script>
+                function createAlert(title, summary, details, severity, dismissible, autoDismiss, appendToId) {
+          var iconMap = {
+            info: "fa fa-info-circle",
+            success: "fa fa-thumbs-up",
+            warning: "fa fa-exclamation-triangle",
+            danger: "fa ffa fa-exclamation-circle"
+          };
+
+          var iconAdded = false;
+
+          var alertClasses = ["alert", "animated", "flipInX"];
+          alertClasses.push("alert-" + severity.toLowerCase());
+
+          if (dismissible) {
+            alertClasses.push("alert-dismissible");
+          }
+
+          var msgIcon = $("<i />", {
+            "class": iconMap[severity] // you need to quote "class" since it's a reserved keyword
+          });
+
+          var msg = $("<div />", {
+            "class": alertClasses.join(" ") // you need to quote "class" since it's a reserved keyword
+          });
+
+          if (title) {
+            var msgTitle = $("<h4 />", {
+              html: title
+            }).appendTo(msg);
+            
+            if(!iconAdded){
+              msgTitle.prepend(msgIcon);
+              iconAdded = true;
+            }
+          }
+
+          if (summary) {
+            var msgSummary = $("<strong />", {
+              html: summary
+            }).appendTo(msg);
+            
+            if(!iconAdded){
+              msgSummary.prepend(msgIcon);
+              iconAdded = true;
+            }
+          }
+
+          if (details) {
+            var msgDetails = $("<p />", {
+              html: details
+            }).appendTo(msg);
+            
+            if(!iconAdded){
+              msgDetails.prepend(msgIcon);
+              iconAdded = true;
+            }
+          }
+          
+
+          if (dismissible) {
+            var msgClose = $("<span />", {
+              "class": "close", // you need to quote "class" since it's a reserved keyword
+              "data-dismiss": "alert",
+              html: "<i class='fa fa-times-circle'></i>"
+            }).appendTo(msg);
+          }
+          
+          $('#' + appendToId).prepend(msg);
+          
+          if(autoDismiss){
+            setTimeout(function(){
+              msg.addClass("flipOutX");
+              setTimeout(function(){
+                msg.remove();
+              },1000);
+            }, 5000);
+          }
+        }
+
       </script>
     </body>
 </html>
