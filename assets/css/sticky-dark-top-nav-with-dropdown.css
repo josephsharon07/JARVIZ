@@ -190,6 +190,18 @@ a.navbar-link.login:hover {
   border-bottom-color: var(--bs-black);
   border-left-color: var(--bs-black);
   font-size: 8px;
+  height: 54px;
+  font-family: 'Roboto';
+  font-weight: 400;
+  border-width: 1px;
+  border-color: var(--bs-gray-400);
+  font-size: 8px;
+  background-color: DodgerBlue;
+  border: none;
+  color: white;
+  padding: 12px 30px;
+  cursor: pointer;
+  font-size: 20px;
 }
 
 .btn-default {

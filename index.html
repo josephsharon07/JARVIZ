@@ -6,13 +6,11 @@
 <link rel="icon" type="image/x-icon" href="/logo.png"><link rel="icon" type="image/x-icon" href="/logo.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>J.A.R.V.I.Z.</title>
-    <meta property="og:type" content="website">
-    <meta property="og:image" content="../assets/img/logo.png">
-    <meta name="description" content=".">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Code&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,700&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:300,400&amp;display=swap">
+    <link rel="stylesheet" href="assets/css/animate.min.css">
     <link rel="stylesheet" href="assets/css/File-Manager.css">
     <link rel="stylesheet" href="assets/css/Navbar-Right-Links-Dark-icons.css">
     <link rel="stylesheet" href="assets/css/Pricing-Centered-badges.css">
@@ -30,11 +28,10 @@
     <nav class="navbar navbar-dark navbar-expand-md bg-dark py-3">
         <div class="container"><img src="assets/img/left-logo.png" width="250"><a class="navbar-brand d-flex align-items-center" href="#"></a>
             <ul class="navbar-nav"></ul><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-5"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="navcol-5">
+            <div class="collapse navbar-collapse" id="navcol-5" style="/*display: flex;*/align-items: center;justify-content: center;">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link active" href="../index.html">Home&nbsp;</a></li>
                     <li class="nav-item"><a class="nav-link active" href="#">Tutorials</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="subject/4thsemester/index.html">Subject</a></li>
                     <li class="nav-item dropdown"><a class="dropdown-toggle nav-link active link-light text-decoration-none" aria-expanded="false" data-bs-toggle="dropdown" href="#">More Options</a>
                         <div class="dropdown-menu"><a class="dropdown-item" href="#">Compailers</a><a class="dropdown-item" href="#">Requests</a><a class="dropdown-item" href="#">About us</a><a class="dropdown-item" href="#">Contact us</a></div>
                     </li>
@@ -55,16 +52,30 @@
         </div>
     </nav>
     <section class="py-4 py-xl-5">
-        <div class="container">
-            <div class="text-white bg-dark border rounded border-0 p-4 p-md-5" style="border-radius: 15px;">
-                <h4 class="fw-bold text-white mb-3">Recent Updates / Uploads:</h4>
-                <div style="color: black;width: 100%;height: 250px;background: var(--bs-light);border-radius: 15px;padding: 4px;overflow-x: hidden;overflow-y: auto;text-align: justify;">
-                    <div class="recent-files"></div>
+        <div class="container py-4 py-xl-5">
+            <div class="row mb-5">
+                <div class="col-md-8 col-xl-6 text-center mx-auto">
+                    <h2>Semester's</h2>
+                </div>
+            </div>
+            <div class="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
+                <div class="col">
+                    <div class="card" data-bss-hover-animate="flash">
+                        <div class="card-body p-4" onclick="window.location.href=&quot;subject/3rdsemester/index.html&quot;">
+                            <h4 class="card-title">III<sup>rd</sup> Semester</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card" data-bss-hover-animate="flash">
+                        <div class="card-body p-4" onclick="window.location.href=&quot;subject/4thsemester/index.html&quot;">
+                            <h4 class="card-title">IV<sup>th</sup>&nbsp;Semester</h4>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
-    <section class="py-4 py-xl-5"></section>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
     <script src="assets/js/index.js"></script>

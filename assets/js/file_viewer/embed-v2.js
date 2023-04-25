@@ -312,14 +312,6 @@
     </div>`: ''
     }
   </div>
-  <div class="row">
-    <div class="col-xxl-2"><a download class="face-button" href="${rawFileURL}">
-            <div class="face-primary"><span class="icon fa fa-cloud"></span>
-                Download
-            </div>
-            <div id="file-size" class="face-secondary"><span class="icon fa fa-hdd-o"></span></div>
-        </a></div>
-</div>
 </div>
 `);
 

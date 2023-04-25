@@ -1,13 +1,14 @@
 const urlParams = new URLSearchParams(window.location.search); // get the URL parameters
 const url = urlParams.get('url'); 
-
+var path;
+var naame;
 
 fetch(url)
   .then(response => response.json())
   .then(data => {
     const myData = data;// variable with the value you want to set
-    const button = document.getElementById("myLink");
-    button.href = "https://files.jarviz.live/"+myData.path;
+    path = myData.path;
+    naame = myData.name;
     console.log(myData.name);
     heading = document.getElementById("head");
     heading.textContent = myData.name;
@@ -20,3 +21,17 @@ fetch(url)
 
 
   
+  function  downloadFile() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', "https://files.jarviz.live/"+path, true);
+    xhr.responseType = 'blob';
+
+    xhr.onload = function(e) {
+        if (this.status == 200) {
+            var blob = new Blob([this.response], {type: 'application/octet-stream'});
+            saveAs(blob, naame);
+        }
+    };
+
+    xhr.send();
+}

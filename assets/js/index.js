@@ -1,3 +1,5 @@
+var logstatus = 1;
+
 if (document.cookie.split(';').some((item) => item.trim().startsWith('jarvizuser='))) {
     // Extract the cookie value
     var cookieValue = document.cookie
@@ -26,6 +28,7 @@ if (document.cookie.split(';').some((item) => item.trim().startsWith('jarvizuser
     }
   } else {
     document.getElementById("user").style.display = "none";
+    logstatus = 0;
   }
 
 function userdiaplay(firstname)
