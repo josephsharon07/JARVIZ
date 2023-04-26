@@ -36,7 +36,7 @@ var firebaseConfig = {
             expires.setTime(expires.getTime() + (10 * 24 * 60 * 60 * 1000)); // 10 days
             document.cookie = `jarvizuser=${JSON.stringify(data)};expires=${expires.toUTCString()};path=/`;
             console.log("User data stored");
-            alert('','SignIn Sucessfull!!..!','You will be redirected to the home page.','success',true,true,'pageMessages');
+            alert('Login Sucessfull!!...');
             // Redirect to home page
             window.location.href = '/index.html';
           }
