@@ -38,7 +38,7 @@ signupForm.addEventListener('submit', (e) => {
     .then((querySnapshot) => {
       if (!querySnapshot.empty) {
         // Username already exists
-        console.error('Username already exists');
+        alert('Username already exists');
         return;
       }
 
@@ -46,7 +46,7 @@ signupForm.addEventListener('submit', (e) => {
         .then((querySnapshot) => {
           if (!querySnapshot.empty) {
             // Phone number already exists
-            console.error('Phone number already exists');
+            alert('Phone number already exists');
             return;
           }
 
@@ -67,7 +67,7 @@ signupForm.addEventListener('submit', (e) => {
               })
               .then(() => {
                 // User data added to Firestore successfully
-                console.log('User created successfully!');
+                alert('Signup Sucessfull!..');
                 succalert.style.display = 'block';
                 setTimeout(2000);
                 window.location.href = ('http://jarviz.live/login/index.html');
