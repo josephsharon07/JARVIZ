@@ -1,5 +1,4 @@
-var succalert = document.getElementById("succalert");
-succalert.style.display = "none";
+
 const firebaseConfig = {
     apiKey: "AIzaSyAF0oB4pUeVsRUxxVFEK9OG76J5oPJ2KtY",
     authDomain: "j-a-r-v-i-z.firebaseapp.com",
@@ -78,6 +77,10 @@ signupForm.addEventListener('submit', (e) => {
             })
             .catch((error) => {
               console.error('Error creating user with Firebase Authentication:', error);
+              if (error.code == 'auth/email-already-in-use')
+              {
+                alert("The Email ID is already in use..")
+              }
             });
         })
         .catch((error) => {
